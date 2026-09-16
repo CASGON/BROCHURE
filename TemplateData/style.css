@@ -1,0 +1,358 @@
+/* =========================================================
+   FormMatterPrime — Unity WebGL / WebXR custom loading UI
+   Archivo: Assets/WebGLTemplates/WebXR/TemplateData/style.css
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap');
+
+:root {
+  --fmp-green: #39ff14;
+  --fmp-green-light: #baff72;
+  --fmp-green-mid: #20d23d;
+  --fmp-green-dark: #063b16;
+  --fmp-black: #020302;
+  --fmp-glow: 0 0 15px rgba(57, 255, 20, 0.6);
+}
+
+/* Página base */
+html, body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--fmp-black);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background: 
+    /* Retícula técnica sutil */
+    linear-gradient(rgba(57, 255, 20, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57, 255, 20, 0.03) 1px, transparent 1px),
+    /* Resplandor central */
+    radial-gradient(circle at 50% 45%, rgba(57, 255, 20, 0.15) 0%, var(--fmp-black) 60%);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+}
+
+/* Contenedor de Unity */
+#unity-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Canvas donde Unity renderiza la experiencia */
+#unity-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: transparent;
+}
+
+/* Panel central de carga - Minimalista */
+#unity-loading-bar {
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  top: 50%;
+  display: none;
+  width: min(88vw, 420px);
+  padding: 20px;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+/* Contenedor del Logo 3D (Three.js) */
+#unity-logo {
+  width: 320px;
+  height: 320px;
+  max-width: 80vw;
+  max-height: 80vw;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Canvas donde se renderiza el cubo y el Tesseract */
+#fmp-3d-logo {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* Resplandor verde eléctrico alrededor del logo */
+  filter: drop-shadow(0 0 15px rgba(57, 255, 20, 0.6));
+}
+
+/* =========================================================
+   Texto de la marca - Estilo Eléctrico
+   ========================================================= */
+.fmp-brand-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 34px;
+  font-weight: 900;
+  color: var(--fmp-green-light);
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  letter-spacing: -0.04em; /* Look moderno y compacto */
+  text-transform: none;
+  user-select: none;
+  
+  /* Resplandor eléctrico multicapa */
+  text-shadow:
+    0 0 4px rgba(57, 255, 20, 0.9),
+    0 0 10px rgba(57, 255, 20, 0.7),
+    0 0 20px rgba(57, 255, 20, 0.5),
+    0 0 40px rgba(57, 255, 20, 0.3);
+    
+  animation: fmp-electric-pulse 1.5s infinite alternate ease-in-out;
+}
+
+/* Animación de pulso eléctrico */
+@keyframes fmp-electric-pulse {
+  0% {
+    opacity: 0.85;
+    text-shadow:
+      0 0 4px rgba(57, 255, 20, 0.8),
+      0 0 10px rgba(57, 255, 20, 0.6),
+      0 0 20px rgba(57, 255, 20, 0.4);
+  }
+  100% {
+    opacity: 1;
+    color: #ffffff; /* Destello blanco en el punto máximo */
+    text-shadow:
+      0 0 6px rgba(57, 255, 20, 1),
+      0 0 15px rgba(57, 255, 20, 0.9),
+      0 0 30px rgba(57, 255, 20, 0.7),
+      0 0 60px rgba(57, 255, 20, 0.5),
+      0 0 100px rgba(57, 255, 20, 0.3);
+  }
+}
+
+/* Barra de progreso estilo láser */
+#unity-progress-bar-empty {
+  width: 100%;
+  height: 2px;
+  margin-top: 15px;
+  overflow: hidden;
+  border: none;
+  border-radius: 0;
+  background: rgba(57, 255, 20, 0.1);
+  position: relative;
+}
+
+/* Línea de escaneo animada sobre la barra */
+#unity-progress-bar-empty::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.8), transparent);
+  animation: fmp-scanline 2s infinite linear;
+}
+
+/*
+  Unity modifica el width de este elemento con JavaScript.
+  No cambies width: 0%.
+*/
+#unity-progress-bar-full {
+  width: 0%;
+  height: 100%;
+  margin-top: 0;
+  border-radius: 0;
+  background: var(--fmp-green);
+  box-shadow: 
+    0 0 10px var(--fmp-green),
+    0 0 20px var(--fmp-green);
+  transition: width 0.1s linear;
+}
+
+/* Pie de página - Minimalista */
+#unity-footer {
+  position: fixed;
+  z-index: 9;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  min-height: 40px;
+  margin-top: 0;
+  padding: 0 16px;
+  line-height: 40px;
+  background: linear-gradient(180deg, transparent, rgba(2, 3, 2, 0.8));
+  border-top: 1px solid rgba(57, 255, 20, 0.1);
+}
+
+/* Oculta el texto/logo original Unity WebGL abajo a la izquierda */
+#unity-webgl-logo {
+  display: none;
+}
+
+/* Nombre de la build, abajo a la derecha */
+#unity-build-title {
+  float: right;
+  margin-right: 8px;
+  color: var(--fmp-green);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 40px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-shadow: var(--fmp-glow);
+}
+
+/* Botón Fullscreen */
+#unity-fullscreen-button {
+  float: right;
+  width: 30px;
+  height: 30px;
+  margin-top: 5px;
+  margin-left: 12px;
+  cursor: pointer;
+  border: 1px solid rgba(57, 255, 20, 0.3);
+  border-radius: 4px;
+  background: url('fullscreen-button.png') no-repeat center;
+  background-size: 16px;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+}
+
+#unity-fullscreen-button:hover {
+  background-color: rgba(57, 255, 20, 0.1);
+  border-color: var(--fmp-green);
+  box-shadow: var(--fmp-glow);
+  opacity: 1;
+}
+
+/* Texto/enlace de WebXR */
+#unity-webxr-link {
+  float: left;
+  margin-right: 10px;
+  color: var(--fmp-green-light);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 40px;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+#unity-webxr-link:hover {
+  opacity: 1;
+}
+
+#unity-webxr-link a {
+  color: var(--fmp-green);
+  text-decoration: none;
+  border-bottom: 1px solid var(--fmp-green);
+}
+
+/* Botones para entrar a VR o AR */
+#entervr:enabled,
+#enterar:enabled {
+  float: right;
+  display: inline-block;
+  width: auto;
+  min-width: 80px;
+  height: 28px;
+  margin: 6px 0 6px 8px;
+  padding: 0 16px;
+  cursor: pointer;
+  color: var(--fmp-black);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 2px;
+  outline: none;
+  background: var(--fmp-green);
+  box-shadow: var(--fmp-glow);
+  transition: all 0.3s ease;
+}
+
+#entervr:enabled:hover,
+#enterar:enabled:hover {
+  background: var(--fmp-green-light);
+  box-shadow: 0 0 25px var(--fmp-green);
+  transform: translateY(-2px);
+}
+
+/* Botones VR/AR deshabilitados */
+#entervr:disabled,
+#enterar:disabled {
+  float: right;
+  display: inline-block;
+  width: auto;
+  min-width: 80px;
+  height: 28px;
+  margin: 6px 0 6px 8px;
+  padding: 0 16px;
+  cursor: not-allowed;
+  color: rgba(57, 255, 20, 0.3);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid rgba(57, 255, 20, 0.2);
+  border-radius: 2px;
+  background: transparent;
+}
+
+/* Animación de la línea de escaneo de la barra de carga */
+@keyframes fmp-scanline {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Diseño para teléfonos */
+@media screen and (max-width: 640px) {
+  #unity-loading-bar {
+    width: min(90vw, 350px);
+    padding: 15px;
+  }
+
+  #unity-logo {
+    width: 240px;
+    height: 240px;
+    max-width: 70vw;
+    max-height: 70vw;
+  }
+
+  .fmp-brand-text {
+    font-size: 24px;
+    margin-top: 0;
+  }
+
+  #unity-build-title {
+    max-width: 40vw;
+    overflow: hidden;
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #unity-webxr-link {
+    display: none;
+  }
+
+  #entervr:enabled,
+  #enterar:enabled,
+  #entervr:disabled,
+  #enterar:disabled {
+    min-width: 60px;
+    padding: 0 10px;
+    font-size: 9px;
+    height: 24px;
+    margin-top: 8px;
+  }
+}
